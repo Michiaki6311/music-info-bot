@@ -46,6 +46,8 @@ post '/lingr' do
       Item.order('RANDOM()').limit(1).first.url
       elsif e['message']['text'] == "#music add" then
         response = "http://kanadebito63-music-info-bot.herokuapp.com/add"
+      elsif e['message']['text'] == "#music list" then
+        redirect '/show'
       else
         ""
     end
