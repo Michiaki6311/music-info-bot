@@ -53,3 +53,9 @@ post '/lingr' do
     end
   }
 end
+
+delete '/del' do
+  del = Item.find(params[:id])
+  del.destroy
+  redirect '/show'
+end

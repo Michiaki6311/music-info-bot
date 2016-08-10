@@ -1,10 +1,14 @@
-<p>
-    <% @items.each do |item| %>
-    <ul>
-        <li><%= item.title %></li>
-        <li><%= item.artist %></li>
-        <li><%= item.genre %></li>
-        <li><a href=<%= item.url %>>動画</a></a></li>
-    </ul>
-    <% end %>
-</p>
+<% @items.each do |item| %>
+<table>
+    <tr><td><%= item.title %></td>
+        <td><%= item.artist %></td>
+        <td><%= item.genre %></td>
+        <td><a href=<%= item.url %>>動画</a></td>
+        <form action="del" method="post">
+        <td><input type="submit" value="削除"/></td>
+        <input type="hidden" name="id" value="<%= item.id %>">
+        <input type="hidden" name="_method" value="delete">
+        </form>
+    </tr>
+</table>
+<% end %>
