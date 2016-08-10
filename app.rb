@@ -12,7 +12,8 @@ get '/' do
 end
 
 get '/music' do
-  'Music information'
+  @title = "Music Information"
+  erb :index
 end
 
 post '/music' do
