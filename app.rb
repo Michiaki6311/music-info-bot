@@ -45,9 +45,9 @@ post '/lingr' do
     if e['message']['text'] == "#music post" then
       Item.order('RANDOM()').limit(1).first.url
       elsif e['message']['text'] == "#music add" then
-        response = "http://kanadebito63-music-info-bot.herokuapp.com/add"
+        response = "登録画面: http://kanadebito63-music-info-bot.herokuapp.com/add"
       elsif e['message']['text'] == "#music list" then
-        response = "https://kanadebito63-music-info-bot.herokuapp.com/show"
+        response = "一覧画面: https://kanadebito63-music-info-bot.herokuapp.com/show"
       else
         ""
     end
