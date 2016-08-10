@@ -35,7 +35,7 @@ end
 post '/lingr' do
   j = JSON.parse(request.body.string)
   j['events'].select{|e| e['message']}.map{|e|
-    if e['message']['text'] == "music" then
+    if e['message']['text'] == "#music" then
       Item.order('RANDOM()').limit(1).first.url
       else
         ""
