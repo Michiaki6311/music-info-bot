@@ -47,7 +47,7 @@ post '/lingr' do
       elsif e['message']['text'] == "#music add" then
         response = "http://kanadebito63-music-info-bot.herokuapp.com/add"
       elsif e['message']['text'] == "#music list" then
-        redirect '/show'
+        response = "https://kanadebito63-music-info-bot.herokuapp.com/show"
       else
         ""
     end
