@@ -29,7 +29,6 @@ post '/add' do
     music.save
     redirect '/add'
   else
-    @error = music.errors
     erb :error
   end
 end
@@ -46,7 +45,7 @@ post '/lingr' do
     if e['message']['text'] == "#music post" then
       Item.order('RANDOM()').limit(1).first.url
       elsif e['message']['text'] == "#music add" then
-        response = "http://lingr-bot-michiakihyakutake.c9users.io/add"
+        response = "http://kanadebito63-music-info-bot.herokuapp.com/add"
       else
         ""
     end
