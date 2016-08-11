@@ -10,4 +10,6 @@ gem 'pg'
 gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'rake'
+gem 'google-api-client', '>0.7'
+gem 'nokogiri'
 # gem "rails"

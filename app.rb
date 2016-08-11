@@ -2,6 +2,7 @@ require 'sinatra'
 require 'json'
 require 'active_record'
 require 'sinatra/activerecord'
+require 'open-uri'
 
 ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://amfzhtdoyvixst:dyR7kstCVyDT6HCs3bY4cbGqAr@ec2-54-235-89-113.compute-1.amazonaws.com:5432/daeo4qlo2s0b9q')
 
@@ -58,4 +59,22 @@ delete '/del' do
   del = Item.find(params[:id])
   del.destroy
   redirect '/show'
+end
+
+post '/search' do
+  key = ENV['DEVELOPER_KEY']
+  searchword = ""
+  j = JSON.parse(request.body.string)
+  j['events'].select{|e| e['message']}.map{|e|
+    if e['message']['text'] == "mew" then
+      searchword = e['message']['text']
+    end
+  }
+  
+  j = open("https://www.googleapis.com/youtube/v3/search?key=#{key}&q=#{searchword}&part=id,snippet")
+  data = j.read
+  json = JSON.parse(data)
+  json['items'].select{|e| e['id']}.map{|e|
+   response = "https://www.youtube.com/watch?v=#{e['id']['videoId']}\n"
+  }
 end
