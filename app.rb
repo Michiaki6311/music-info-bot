@@ -66,8 +66,10 @@ post '/search' do
   searchword = ""
   j = JSON.parse(request.body.string)
   j['events'].select{|e| e['message']}.map{|e|
-    if e['message']['text'] == "mew" then
-      searchword = e['message']['text']
+    if e['message']['text'] =~ /^#v/ then
+      searchword = e['message']['text'].gsub(/^#v+\s/,"").gsub(/\s/,"_")
+      else
+        ""
     end
   }
   
@@ -75,6 +77,10 @@ post '/search' do
   data = j.read
   json = JSON.parse(data)
   json['items'].select{|e| e['id']}.map{|e|
+  if e['id']['videoId'] then
    response = "https://www.youtube.com/watch?v=#{e['id']['videoId']}\n"
+  else
+   ""
+  end
   }
 end
