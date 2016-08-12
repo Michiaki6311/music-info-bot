@@ -69,10 +69,13 @@ post '/search' do
     if e['message']['text'] =~ /^#v/ then
       searchword = e['message']['text'].gsub(/^#v+\s/,"").gsub(/\s/,"_")
       else
-        ""
+      searchword = ""
     end
   }
   
+  if searchword == "" then
+    ""
+  else
   j = open("https://www.googleapis.com/youtube/v3/search?key=#{key}&q=#{searchword}&part=id,snippet")
   data = j.read
   json = JSON.parse(data)
@@ -86,4 +89,5 @@ post '/search' do
   end
   }
   array.first
+end
 end
