@@ -3,6 +3,7 @@ require 'json'
 require 'active_record'
 require 'sinatra/activerecord'
 require 'open-uri'
+require 'uri'
 
 ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://amfzhtdoyvixst:dyR7kstCVyDT6HCs3bY4cbGqAr@ec2-54-235-89-113.compute-1.amazonaws.com:5432/daeo4qlo2s0b9q')
 
@@ -67,7 +68,7 @@ post '/search' do
   j = JSON.parse(request.body.string)
   j['events'].select{|e| e['message']}.map{|e|
     if e['message']['text'] =~ /^#v/ then
-      searchword = e['message']['text'].gsub(/^#v+\s/,"").gsub(/\s/,"_")
+      searchword = e['message']['text'].gsub(/^#v+\s/,'').gsub(/\s/,'_')
       else
       searchword = ""
     end
@@ -76,18 +77,20 @@ post '/search' do
   if searchword == "" then
     ""
   else
-  j = open("https://www.googleapis.com/youtube/v3/search?key=#{key}&q=#{searchword}&part=id,snippet")
-  data = j.read
-  json = JSON.parse(data)
-  array = []
-  json['items'].select{|e| e['id']}.map{|e|
-  if e['id']['videoId'] then
-   url = "https://www.youtube.com/watch?v=#{e['id']['videoId']}\n"
-   array.push(url)
-  else
-   ""
+    url1 = "https://www.googleapis.com/youtube/v3/search?key=#{key}&q=#{searchword}&part=id,snippet"
+    url2 = URI.encode(url1)
+   j = open(url2)
+   data = j.read
+   json = JSON.parse(data)
+   array = []
+   json['items'].select{|e| e['id']}.map{|e|
+    if e['id']['videoId'] then
+     url3 = "https://www.youtube.com/watch?v=#{e['id']['videoId']}\n"
+     array.push(url3)
+    else
+     ""
+    end
+   }
+   array.first
   end
-  }
-  array.first
-end
 end
