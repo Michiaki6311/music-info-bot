@@ -76,11 +76,14 @@ post '/search' do
   j = open("https://www.googleapis.com/youtube/v3/search?key=#{key}&q=#{searchword}&part=id,snippet")
   data = j.read
   json = JSON.parse(data)
+  array = []
   json['items'].select{|e| e['id']}.map{|e|
   if e['id']['videoId'] then
-   response = "https://www.youtube.com/watch?v=#{e['id']['videoId']}\n"
+   url = "https://www.youtube.com/watch?v=#{e['id']['videoId']}\n"
+   array.push(url)
   else
    ""
   end
   }
+  array.first
 end
