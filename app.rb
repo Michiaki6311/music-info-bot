@@ -68,16 +68,17 @@ post '/search' do
   j = JSON.parse(request.body.string)
   j['events'].select{|e| e['message']}.map{|e|
     if e['message']['text'] =~ /^#v/ then
-      searchword = e['message']['text'].gsub(/^#v+\s/,'').gsub(/\s/,'_')
+      searchword = e['message']['text']
+      elsif e['message']['text'] =~ /^#vf\s/ then
+      searchword = e['message']['text']
       else
       searchword = ""
     end
   }
   
-  if searchword == "" then
-    ""
-  else
-    url1 = "https://www.googleapis.com/youtube/v3/search?key=#{key}&q=#{searchword}&part=id,snippet"
+  if searchword =~ /^#v\s/ then
+    searchword_new = searchword.gsub(/^#v\s/,'').gsub(/\s/,'_')
+    url1 = "https://www.googleapis.com/youtube/v3/search?key=#{key}&q=#{searchword_new}&part=id,snippet"
     url2 = URI.encode(url1)
    j = open(url2)
    data = j.read
@@ -92,5 +93,26 @@ post '/search' do
     end
    }
    array.first
+   elsif searchword =~ /^#vf\s/ then
+   searchword_new = searchword.gsub(/^#vf\s/,'').gsub(/\s/,'_')
+    url1 = "https://www.googleapis.com/youtube/v3/search?key=#{key}&q=#{searchword_new}&part=id,snippet"
+    url2 = URI.encode(url1)
+   j = open(url2)
+   data = j.read
+   json = JSON.parse(data)
+   array = []
+   json['items'].select{|e| e['id']}.map{|e|
+    if e['id']['videoId'] then
+     url3 = "https://www.youtube.com/watch?v=#{e['id']['videoId']}\n"
+     array.push(url3)
+    else
+     ""
+    end
+   }
+   array.each{|arr|
+   arr
+   }
+ else
+   ""
   end
 end
