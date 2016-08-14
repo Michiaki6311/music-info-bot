@@ -77,7 +77,7 @@ post '/search' do
   }
   
   if searchword =~ /^#v\s/ then
-    searchword_new = searchword.gsub(/^#v\s/,'').gsub(/\s/,'_')
+    searchword_new = searchword.gsub(/^#v\s/,'').gsub(/\s/,'+')
     url1 = "https://www.googleapis.com/youtube/v3/search?key=#{key}&q=#{searchword_new}&part=id,snippet"
     url2 = URI.encode(url1)
    j = open(url2)
@@ -94,7 +94,7 @@ post '/search' do
    }
    array.first
    elsif searchword =~ /^#vf\s/ then
-   searchword_new = searchword.gsub(/^#vf\s/,'').gsub(/\s/,'_')
+   searchword_new = searchword.gsub(/^#vf\s/,'').gsub(/\s/,'+')
     url1 = "https://www.googleapis.com/youtube/v3/search?key=#{key}&q=#{searchword_new}&part=id,snippet"
     url2 = URI.encode(url1)
    j = open(url2)
